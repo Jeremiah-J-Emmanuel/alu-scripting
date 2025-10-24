@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-
 """
 This module makes use of a Reddit API to obtain the number of subscribers
 based on a given subreddit which will be inputted by the user.
