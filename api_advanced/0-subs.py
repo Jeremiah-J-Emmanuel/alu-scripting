@@ -1,7 +1,8 @@
-#!/usr/bin/env python3
+#!/usr/bin/python3
 
 import requests
 import sys
+
 
 def number_of_subscribers(subreddit):
     url = f"https://www.reddit.com/r/{subreddit}/about.json"
@@ -15,11 +16,11 @@ def number_of_subscribers(subreddit):
         return (output["data"])["subscribers"]
 
 
-
-if len(sys.argv) != 2:
-    print("Please pass an argument for the subreddit to search.")
-    sys.exit(1)
-else:
-    subreddit = sys.argv[1]
-    subscribers = number_of_subscribers(subreddit)
-    print(subscribers)
+if __name__ == "__main__":
+    if len(sys.argv) != 2:
+        print("Please pass an argument for the subreddit to search.")
+        sys.exit(1)
+    else:
+        subreddit = sys.argv[1]
+        subscribers = number_of_subscribers(subreddit)
+        print(subscribers)
