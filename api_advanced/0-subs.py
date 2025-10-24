@@ -1,5 +1,13 @@
 #!/usr/bin/python3
 
+"""
+This module makes use of a Reddit API to obtain the number of subscribers
+based on a given subreddit which will be inputted by the user.
+If the user does not provide an existing subreddit or any subreddit at all, the
+function will return 0.
+"""
+
+
 import requests
 import sys
 
