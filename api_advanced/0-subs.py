@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 """
 Query the Reddit API and return the number of subscribers for a given subreddit.
-
 If the subreddit is invalid or not provided, the function returns 0.
 """
 
@@ -10,9 +9,8 @@ import sys
 
 
 def number_of_subscribers(subreddit):
-    """
-    Return the number of subscribers for a given subreddit.
-    """
+    """Return the number of subscribers for a given subreddit."""
+
     url = f"https://www.reddit.com/r/{subreddit}/about.json"
     headers = {"User-Agent": "python:intranetassignment:apis-Jeremiah"}
     response = requests.get(url, headers=headers)
