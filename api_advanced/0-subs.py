@@ -12,6 +12,7 @@ import sys
 
 
 def number_of_subscribers(subreddit):
+    "This function is used to obtain the number of subscribers of a subreddit"
     url = f"https://www.reddit.com/r/{subreddit}/about.json"
     headers = { "User-Agent": "python:intranetassignment:apis-Jeremiah"}
     response = requests.get(url, headers=headers)
@@ -21,6 +22,9 @@ def number_of_subscribers(subreddit):
     else:
         output = response.json()
         return (output["data"])["subscribers"]
+        """
+        The return value is the number of subscribers of the subreddit
+        """
 
 
 if __name__ == "__main__":
@@ -29,5 +33,8 @@ if __name__ == "__main__":
         sys.exit(1)
     else:
         subreddit = sys.argv[1]
+        """
+        The Argv value is the subreddit that the user wants to know the number of subscribers.
+        """
         subscribers = number_of_subscribers(subreddit)
         print(subscribers)
