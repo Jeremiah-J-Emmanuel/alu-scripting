@@ -1,40 +1,38 @@
 #!/usr/bin/python3
 
 """
-A function that queries the Reddit API and returns the number
-of subscribers (not active users, total subscribers) for a
-given subreddit.
+This module makes use of the Reddit API to obtain the number of subscribers
+based on a given subreddit which will be inputted by the user.
+If the user does not provide an existing subreddit or any subreddit at all, the
+function will return 0.
 """
 
-import json
-import urllib.error
-import urllib.request
+import requests
+import sys
 
 
 def number_of_subscribers(subreddit):
-    """Returns the number of subscribers for a given subreddit"""
+    """
+    This function is used to obtain the number of subscribers of a subreddit.
+    """
+    url = f"https://www.reddit.com/r/{subreddit}/about.json"
+    headers = {"User-Agent": "python:intranetassignment:apis-Jeremiah"}
+    response = requests.get(url, headers=headers)
+    
+    if response.status_code != 200:
+        return 0
+    else:
+        output = response.json()
+        # The return value is the number of subscribers of the subreddit
+        return (output["data"])["subscribers"]
 
-    try:
-        base_url = 'https://api.reddit.com'
-        url_path = 'r/{}/about'.format(subreddit)
-        headers = {'User-Agent': 'Holberton/1.0'}
-        request = urllib.request.Request(
-            '{}/{}'.format(base_url, url_path),
-            headers=headers)
-        response = urllib.request.urlopen(request)
 
-        if response.status == 200:
-            html = response.read()
-            html_decoded = html.decode('utf8')
-            kind = json.loads(html_decoded)['kind']
-            data = json.loads(html_decoded)['data']
-
-            if kind == 't5' and data['subscribers'] > 0:
-                return data['subscribers']
-            else:
-                return 0
-
-    except urllib.error.HTTPError as http_error:
-        return http_error
-    except json.decoder.JSONDecodeError as json_error:
-        return json_error
+if __name__ == "__main__":
+    if len(sys.argv) != 2:
+        print("Please pass an argument for the subreddit to search.")
+        sys.exit(1)
+    else:
+        subreddit = sys.argv[1]
+        # The argv value is the subreddit that the user wants to know the number of subscribers for
+        subscribers = number_of_subscribers(subreddit)
+        print(subscribers)
