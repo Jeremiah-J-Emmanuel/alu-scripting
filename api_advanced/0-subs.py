@@ -19,13 +19,3 @@ def number_of_subscribers(subreddit):
         return 0
     output = response.json()
     return output["data"]["subscribers"]
-
-
-if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        print("Please pass an argument for the subreddit to search.")
-        sys.exit(1)
-
-    subreddit = sys.argv[1]
-    subscribers = number_of_subscribers(subreddit)
-    print(subscribers)
