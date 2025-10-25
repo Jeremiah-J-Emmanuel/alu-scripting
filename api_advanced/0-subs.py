@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+
 """
 Query the Reddit API and return the number of subscribers for a given subreddit.
 If the subreddit is invalid or not provided, the function returns 0.
