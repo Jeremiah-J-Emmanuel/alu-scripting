@@ -1,40 +1,31 @@
+"""Query the Reddit API and return the number of subscribers for a given subreddit.
+If the subreddit is invalid or not provided, the function returns 0.
+"""
+
 #!/usr/bin/python3
 
-"""
-A function that queries the Reddit API and returns the number
-of subscribers (not active users, total subscribers) for a
-given subreddit.
-"""
-
-import json
-import urllib.error
-import urllib.request
+import requests
+import sys
 
 
 def number_of_subscribers(subreddit):
-    """Returns the number of subscribers for a given subreddit"""
+    """Return the number of subscribers for a given subreddit."""
 
-    try:
-        base_url = 'https://api.reddit.com'
-        url_path = 'r/{}/about'.format(subreddit)
-        headers = {'User-Agent': 'Holberton/1.0'}
-        request = urllib.request.Request(
-            '{}/{}'.format(base_url, url_path),
-            headers=headers)
-        response = urllib.request.urlopen(request)
+    url = f"https://www.reddit.com/r/{subreddit}/about.json"
+    headers = {"User-Agent": "python:intranetassignment:apis-Jeremiah"}
+    response = requests.get(url, headers=headers)
 
-        if response.status == 200:
-            html = response.read()
-            html_decoded = html.decode('utf8')
-            kind = json.loads(html_decoded)['kind']
-            data = json.loads(html_decoded)['data']
+    if response.status_code != 200:
+        return 0
+    output = response.json()
+    return output["data"]["subscribers"]
 
-            if kind == 't5' and data['subscribers'] > 0:
-                return data['subscribers']
-            else:
-                return 0
 
-    except urllib.error.HTTPError as http_error:
-        return http_error
-    except json.decoder.JSONDecodeError as json_error:
-        return json_error
+if __name__ == "__main__":
+    if len(sys.argv) != 2:
+        print("Please pass an argument for the subreddit to search.")
+        sys.exit(1)
+
+    subreddit = sys.argv[1]
+    subscribers = number_of_subscribers(subreddit)
+    print(subscribers)
