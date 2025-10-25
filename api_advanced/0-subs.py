@@ -1,40 +1,17 @@
 #!/usr/bin/python3
+"""Return the number of subscribers of a given subreddit"""
 
-"""
-A function that queries the Reddit API and returns the number
-of subscribers (not active users, total subscribers) for a
-given subreddit.
-"""
-
-import json
-import urllib.error
-import urllib.request
+import requests
 
 
 def number_of_subscribers(subreddit):
-    """Returns the number of subscribers for a given subreddit"""
+    """function that fetches number_of_subscribers"""
+    URL = "https://www.reddit.com/r/{}/about.json".format(subreddit)
+    HEADERS = {"User-Agent": "PostmanRuntime/7.35.0"}
 
     try:
-        base_url = 'https://api.reddit.com'
-        url_path = 'r/{}/about'.format(subreddit)
-        headers = {'User-Agent': 'Holberton/1.0'}
-        request = urllib.request.Request(
-            '{}/{}'.format(base_url, url_path),
-            headers=headers)
-        response = urllib.request.urlopen(request)
+        RESPONSE = requests.get(URL, headers=HEADERS, allow_redirects=False)
+        return RESPONSE.json().get("data").get("subscribers")
 
-        if response.status == 200:
-            html = response.read()
-            html_decoded = html.decode('utf8')
-            kind = json.loads(html_decoded)['kind']
-            data = json.loads(html_decoded)['data']
-
-            if kind == 't5' and data['subscribers'] > 0:
-                return data['subscribers']
-            else:
-                return 0
-
-    except urllib.error.HTTPError as http_error:
-        return http_error
-    except json.decoder.JSONDecodeError as json_error:
-        return json_error
+    except Exception:
+        return 0
