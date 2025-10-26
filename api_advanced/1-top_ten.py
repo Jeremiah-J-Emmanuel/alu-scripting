@@ -19,7 +19,7 @@ def number_of_subscribers(subreddit):
         return 0
     else:
         output = response.json()
-        return (output["data"])["subscribers"]
+        return (output["data"])["hotposts"]
         """
         The return value is the number of subscribers of the subreddit
         """
@@ -36,3 +36,28 @@ if __name__ == "__main__":
         """
         subscribers = number_of_subscribers(subreddit)
         print(subscribers)
+
+# ...existing code...
+subreddit = "learnpython"
+import requests
+
+def print_top_10_titles(subreddit):
+    url = f"https://www.reddit.com/r/{subreddit}/hot.json"
+    headers = {"User-Agent": "python:top_ten_script:v1.0 (by /u/you)"}
+    params = {"limit": 25}  # request extra so we can skip stickied posts
+    resp = requests.get(url, headers=headers, params=params, timeout=10)
+    resp.raise_for_status()
+    posts = resp.json().get("data", {}).get("children", [])
+    count = 0
+    for post in posts:
+        if post.get("data", {}).get("stickied"):
+            continue
+        title = post.get("data", {}).get("title", "[deleted]")
+        count += 1
+        print(f"{count}. {title}")
+        if count >= 10:
+            break
+
+if __name__ == "__main__":
+    print_top_10_titles(subreddit)
+# ...existing code...
