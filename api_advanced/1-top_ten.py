@@ -21,6 +21,5 @@ def top_ten(subreddit):
                 print(POST.get("data").get("title"))
         else:
             print("OK")
-            
     except Exception:
         print("OK")
